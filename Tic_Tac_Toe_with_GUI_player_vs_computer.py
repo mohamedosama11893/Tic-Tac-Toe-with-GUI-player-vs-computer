@@ -149,6 +149,23 @@ def computer_move():
     current_turn = "player"
     update_turn_label()
 
+def handle_game_end(winner_symbol):
+    """
+    Handle the end of the game when a winner is detected.
+    - Set game_over flag.
+    - Update result_text and increment the correct score.
+    - Refresh the displayed score.
+    """
+    global game_over
+    game_over = True
+    if winner_symbol == player_symbol:
+        result_text.set("You Win!")
+        user_score.set(user_score.get() + 1)
+    else:
+        result_text.set("Computer Wins!")
+        computer_score.set(computer_score.get() + 1)
+    update_score_text()
+
 
 # ---------------- GUI ----------------
 window = tk.Tk()

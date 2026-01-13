@@ -121,6 +121,33 @@ def check_empty_spaces():
                 return True
     return False
 
+def computer_move():
+    """
+    Computer picks a random empty cell and places its symbol.
+    After the move, check for a win or tie and switch back to player if the game continues.
+    """
+    global current_turn, game_over
+    if game_over:
+        return
+    empty_cells = [(r, c) for r in range(3) for c in range(3) if cell_buttons[r][c]['text'] == ""]
+    if not empty_cells:
+        return
+    r, c = random.choice(empty_cells)
+    sym = comp_symbol
+    img = x_img if sym == "X" else o_img
+    cell_buttons[r][c].config(image=img, text=sym)
+
+    winner = check_win()
+    if winner:
+        handle_game_end(winner)
+        return
+    if not check_empty_spaces():
+        handle_tie()
+        return
+
+    # switch back to player
+    current_turn = "player"
+    update_turn_label()
 
 
 # ---------------- GUI ----------------

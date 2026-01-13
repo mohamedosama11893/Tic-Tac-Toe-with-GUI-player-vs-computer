@@ -165,6 +165,21 @@ def handle_game_end(winner_symbol):
         result_text.set("Computer Wins!")
         computer_score.set(computer_score.get() + 1)
     update_score_text()
+    
+def handle_tie():
+    """
+    Handle a tie (no empty spaces and no winner).
+    - Set game_over flag.
+    - Set result_text to "Tie!" and color cells as a visual cue.
+    """
+    global game_over
+    game_over = True
+    result_text.set("Tie!")
+    # color cells as a tie indicator
+    for r in range(3):
+        for c in range(3):
+            if cell_buttons[r][c]['text'] != "":
+                cell_buttons[r][c].config(bg='red')
 
 
 # ---------------- GUI ----------------

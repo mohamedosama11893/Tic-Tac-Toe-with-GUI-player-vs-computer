@@ -180,6 +180,18 @@ def handle_tie():
         for c in range(3):
             if cell_buttons[r][c]['text'] != "":
                 cell_buttons[r][c].config(bg='red')
+                
+def update_score_text():
+    """Update the score label text variable from the current IntVar values."""
+    score_text.set(f"You: {user_score.get()}   Computer: {computer_score.get()}")
+
+
+def update_turn_label():
+    """Update the turn label showing who is to move and which symbol they use."""
+    if current_turn == "player":
+        player_label.config(text=f"Player Turn: Player ({player_symbol})")
+    else:
+        player_label.config(text=f"Player Turn: Computer ({comp_symbol})")
 
 
 # ---------------- GUI ----------------

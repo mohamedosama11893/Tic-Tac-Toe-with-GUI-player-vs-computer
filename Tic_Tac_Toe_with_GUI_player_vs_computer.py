@@ -19,3 +19,36 @@ import os
 # 8) handle_game_end() and handle_tie() set game_over, update result_text and scores.
 # 9) start_new_game() clears the board, chooses starter and symbols randomly and may start the computer.
 # ================================================================
+
+def load_game_assets(category):
+    """
+    Search assets/<category>/ for PNG files and return a dict with keys "X" and "O".
+    Heuristics:
+      - If filename contains 'x' (and not 'o') assign as X.
+      - If filename contains 'o' (and not 'x') assign as O.
+    Falls back to remaining files if explicit names are not found.
+    """
+    pattern = os.path.join("assets", category, "*.png")
+    files = glob.glob(pattern)
+    assets = {}
+    for file in files:
+        name = os.path.splitext(os.path.basename(file))[0].lower()
+        if "x" in name and "o" not in name:
+            assets["X"] = file
+        elif "o" in name and "x" not in name:
+            assets["O"] = file
+    # fallback: if explicit names are not found, take remaining files (first -> X, second -> O)
+    remaining = [f for f in files if f not in (assets.get("X"), assets.get("O"))]
+    if "X" not in assets and remaining:
+        assets["X"] = remaining.pop(0)
+    if "O" not in assets and remaining:
+        assets["O"] = remaining.pop(0)
+    return assets
+
+
+# Game control variables
+player_symbol = "X"
+comp_symbol = "O"
+current_turn = "player"   # either 'player' or 'computer'
+game_over = False
+

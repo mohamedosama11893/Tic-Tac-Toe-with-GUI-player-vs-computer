@@ -192,7 +192,34 @@ def update_turn_label():
         player_label.config(text=f"Player Turn: Player ({player_symbol})")
     else:
         player_label.config(text=f"Player Turn: Computer ({comp_symbol})")
+        
+def start_new_game():
+    """
+    Reset the board and game state for a new round.
+    - Choose starter and player symbol randomly.
+    - Reset game_over and clear all cells and messages.
+    - If computer starts, schedule computer_move().
+    """
+    global player_symbol, comp_symbol, current_turn, game_over
+    starter = random.choice(['player', 'computer'])
+    player_symbol = random.choice(['X', 'O'])
+    comp_symbol = 'O' if player_symbol == 'X' else 'X'
+    current_turn = starter
+    game_over = False
 
+    # clear board cells
+    for r in range(3):
+        for c in range(3):
+            cell_buttons[r][c].config(text="", image="", bg='SystemButtonFace')
+
+    # clear result and update UI labels
+    result_text.set("")
+    update_score_text()
+    update_turn_label()
+
+    # if computer starts, make first move after a short delay
+    if current_turn == 'computer':
+        window.after(400, computer_move)
 
 # ---------------- GUI ----------------
 window = tk.Tk()

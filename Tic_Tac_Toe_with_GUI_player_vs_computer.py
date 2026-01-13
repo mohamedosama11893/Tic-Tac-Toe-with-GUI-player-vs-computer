@@ -52,6 +52,41 @@ comp_symbol = "O"
 current_turn = "player"   # either 'player' or 'computer'
 game_over = False
 
+def next_turn(row, col):
+    """
+    Handle a player's click on cell (row, col).
+    - Only accept clicks when it's player's turn and the game is not over.
+    - Place player's symbol (image + text).
+    - Check for a win or tie; if neither, switch to computer and schedule computer_move().
+    """
+    global current_turn, game_over
+    # ignore click if it's not the player's turn or the game has ended
+    if current_turn != "player" or game_over:
+        return
+    # ignore click if the cell is not empty
+    if cell_buttons[row][col]['text'] != "":
+        return
+
+    # place player's symbol (image + text)
+    sym = player_symbol
+    img = x_img if sym == "X" else o_img
+    cell_buttons[row][col].config(image=img, text=sym)
+
+    # check for win or tie
+    winner = check_win()
+    if winner:
+        handle_game_end(winner)
+        return
+    if not check_empty_spaces():
+        handle_tie()
+        return
+
+    # switch to computer turn and schedule computer move after a short delay
+    current_turn = "computer"
+    update_turn_label()
+    window.after(2000, computer_move)
+
+
 # ---------------- GUI ----------------
 window = tk.Tk()
 window.title("X O Game by Mohamed Osama")

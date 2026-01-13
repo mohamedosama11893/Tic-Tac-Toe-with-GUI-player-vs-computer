@@ -86,6 +86,42 @@ def next_turn(row, col):
     update_turn_label()
     window.after(2000, computer_move)
 
+def check_win():
+    """
+    Check all possible winning lines (rows, columns, diagonals).
+    If a winning line is found, color the three cells and return the winning symbol 'X' or 'O'.
+    Otherwise return False.
+    """
+    lines = [
+        [(0, 0), (0, 1), (0, 2)], [(1, 0), (1, 1), (1, 2)], [(2, 0), (2, 1), (2, 2)],
+        [(0, 0), (1, 0), (2, 0)], [(0, 1), (1, 1), (2, 1)], [(0, 2), (1, 2), (2, 2)],
+        [(0, 0), (1, 1), (2, 2)], [(0, 2), (1, 1), (2, 0)]
+    ]
+    for line in lines:
+        a, b, c = line
+        ta = cell_buttons[a[0]][a[1]]['text']
+        tb = cell_buttons[b[0]][b[1]]['text']
+        tc = cell_buttons[c[0]][c[1]]['text']
+        if ta != "" and ta == tb == tc:
+            # color winning cells
+            cell_buttons[a[0]][a[1]].config(bg='#23F0F0')
+            cell_buttons[b[0]][b[1]].config(bg='#23F0F0')
+            cell_buttons[c[0]][c[1]].config(bg='#23F0F0')
+            return ta
+    return False
+
+
+def check_empty_spaces():
+    """
+    Return True if there is at least one empty cell (text == ""), otherwise False.
+    """
+    for r in range(3):
+        for c in range(3):
+            if cell_buttons[r][c]['text'] == "":
+                return True
+    return False
+
+
 
 # ---------------- GUI ----------------
 window = tk.Tk()

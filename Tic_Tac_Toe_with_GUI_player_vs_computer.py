@@ -52,3 +52,22 @@ comp_symbol = "O"
 current_turn = "player"   # either 'player' or 'computer'
 game_over = False
 
+# ---------------- GUI ----------------
+window = tk.Tk()
+window.title("X O Game by Mohamed Osama")
+window.geometry("420x700")
+window.resizable(False, False)
+
+# load images (after root window is created)
+assets = load_game_assets("characters")
+if not assets.get("X") or not assets.get("O"):
+    raise RuntimeError("Missing images!")
+
+x_img = ImageTk.PhotoImage(Image.open(assets["X"]).resize((100, 100)))
+o_img = ImageTk.PhotoImage(Image.open(assets["O"]).resize((100, 100)))
+
+# UI variables
+user_score = tk.IntVar(value=0)
+computer_score = tk.IntVar(value=0)
+result_text = tk.StringVar(value="")
+score_text = tk.StringVar(value=f"You: {user_score.get()}   Computer: {computer_score.get()}")
